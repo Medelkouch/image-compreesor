@@ -1,10 +1,12 @@
-
+from io import BytesIO
+from zipfile import ZipFile
 from config import IMG_PATH, IMG_COMPRESS_PATH, IMG_QUALITY
 from PIL import Image
 from hurry.filesize import size
-import os
 import requests
 from logger import log
+from fastapi import Response
+import os
 
 
 def create_directory(path):
@@ -13,11 +15,6 @@ def create_directory(path):
         os.makedirs(path, exist_ok=False)
         log.info(
             f"New folder added: {path}")
-
-
-def get_files_directory(folder_id):
-    files = os.listdir(IMG_PATH+str(folder_id))
-    return files
 
 
 def get_file_size(file_path):
@@ -40,6 +37,46 @@ def image_optimizer(image_data, folder_id):
         log.info(
             f"Image ( {fat_img.filename} ) from {get_file_size(fat_img.filename)} to {get_file_size(slim_img_filename)}")
         return True
+
+############################## download stuff ###################################
+
+
+def get_files_directory(folder_path):
+    files = os.listdir(folder_path)
+    files = [folder_path + f for f in files]
+    return files
+
+
+def zip_folder(folder_path):
+    zip_subdir = "download"
+    zip_filename = f"{zip_subdir}.zip"
+
+    filenames = get_files_directory(folder_path)
+
+    # Open StringIO to grab in-memory ZIP contents
+    s = BytesIO()
+
+    # The zip compressor
+    zf = ZipFile(s, "w")
+
+    for fpath in filenames:
+        # Calculate path for file in zip
+        _, fname = os.path.split(fpath)
+        zip_path = os.path.join(zip_subdir, fname)
+
+        # Add file, at correct path
+        zf.write(fpath, zip_path)
+
+    # Must close zip for all contents to be written
+    zf.close()
+
+    # Grab ZIP file from in-memory, make response with correct MIME-type
+    resp = Response(
+        s.getvalue(), media_type="application/x-zip-compressed")
+    resp.headers["Content-Disposition"] = 'attachment; filename=%s' % zip_filename
+
+    return resp
+
 
 #######################################################################
 
