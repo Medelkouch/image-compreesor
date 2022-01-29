@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    command: gunicorn main:app --workers 4 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:80  
+    #uvicorn main:app --host 0.0.0.0
+    volumes:
+      - .:/app
+    ports:
+      - 7000:80
+    restart: always
