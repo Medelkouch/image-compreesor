@@ -35,7 +35,7 @@ class ImageBody(BaseModel):
 
 
 class OptImgBody(BaseModel):
-    folder_id: str
+    estate_id: str
     images: List[ImageBody]
 
 
@@ -45,11 +45,11 @@ def optimize_images(body: OptImgBody):
     skipped_images = []
 
     images = body.images
-    folder_id = str(body.folder_id) + "/"
+    estate_id = str(body.estate_id) + "/"
 
     log.info(f">> Images processing start : {body}")
     for img in images:
-        if image_optimizer(img, folder_id):
+        if image_optimizer(img, estate_id):
             optimized_images.append(img.id)
         else:
             skipped_images.append(img)
@@ -64,12 +64,12 @@ def optimize_images(body: OptImgBody):
 
 
 class DowImgBody(BaseModel):
-    folder_id: str
+    estate_id: str
 
 
 @app.post("/api/image/download")
 def download_images(body: DowImgBody):
-    folder_path = IMG_COMPRESS_PATH + body.folder_id + '/'
+    folder_path = IMG_COMPRESS_PATH + body.estate_id + '/'
 
     try:
         download = zip_folder(folder_path)
