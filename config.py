@@ -10,8 +10,9 @@ DB_CONFIG = {
 }
 
 # images folder absolutes path end with '/'
-IMG_COMPRESS_PATH = './storage/compressed/'
-IMG_PATH = './storage/images/'
+ROOT_DIR='/var/www/store-v2/storage/app/public/cdn/images/'
+IMG_COMPRESS_PATH = ROOT_DIR + 'tiny-images/'
+RESIZED_PATH = ROOT_DIR + 'tiny-images-plus-2/'
 LOGS_PATH = './logs/'
 
 

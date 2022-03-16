@@ -1,6 +1,6 @@
 from io import BytesIO
 from zipfile import ZipFile
-from config import IMG_PATH, IMG_COMPRESS_PATH, IMG_QUALITY
+from config import IMG_COMPRESS_PATH, IMG_QUALITY, RESIZED_PATH, ROOT_DIR
 from PIL import Image
 from hurry.filesize import size
 import requests
@@ -20,14 +20,31 @@ def create_directory(path):
 def get_file_size(file_path):
     size_ = os.path.getsize(file_path)
     return size(size_)
-
-
-def image_optimizer(image_data, estate_id):
-    try:
-        fat_img = Image.open(IMG_PATH + estate_id + image_data.name)
+'''
+  fat_img = Image.open('/var/www/store-v2/storage/app/public/cdn/images/'+fname)
         ###
-        create_directory(IMG_COMPRESS_PATH + estate_id)
-        slim_img_filename = IMG_COMPRESS_PATH + estate_id + image_data.name
+        # create_directory(IMG_COMPRESS_PATH + estate_id)
+        slim_img_filename = '/var/www/store-v2/storage/app/public/cdn/images/tiny-images-plus-5/'+fname
+        resized = fat_img.resize((200, 200))
+        resized.save(slim_img_filename, optimize=True,
+                     quality=IMG_QUALITY)  # 95 => 50% , 90 => 30%
+'''
+
+def image_optimizer(image_data):
+    try:
+        fat_img = Image.open(ROOT_DIR + image_data.name)
+        ### make directories
+        create_directory(IMG_COMPRESS_PATH)
+        create_directory(RESIZED_PATH)
+
+        # compressed image name
+        slim_img_filename = IMG_COMPRESS_PATH + image_data.name
+        resized_filename = RESIZED_PATH + image_data.name
+        # Save resize imaeg
+        resized = fat_img.resize((200, 200))
+        resized.save(resized_filename, optimize=True,
+                     quality=IMG_QUALITY)  # 95 => 50% , 90 => 30%
+        # Save compressed image
         fat_img.save(slim_img_filename, optimize=True,
                      quality=IMG_QUALITY)  # 95 => 50% , 90 => 30%
     except Exception as e:
