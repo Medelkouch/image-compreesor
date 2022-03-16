@@ -30,16 +30,16 @@ def get_file_size(file_path):
                      quality=IMG_QUALITY)  # 95 => 50% , 90 => 30%
 '''
 
-def image_optimizer(image_data):
+def image_optimizer(image_name):
     try:
-        fat_img = Image.open(ROOT_DIR + image_data.name)
+        fat_img = Image.open(ROOT_DIR + image_name.name)
         ### make directories
         create_directory(IMG_COMPRESS_PATH)
         create_directory(RESIZED_PATH)
 
         # compressed image name
-        slim_img_filename = IMG_COMPRESS_PATH + image_data.name
-        resized_filename = RESIZED_PATH + image_data.name
+        slim_img_filename = IMG_COMPRESS_PATH + image_name.name
+        resized_filename = RESIZED_PATH + image_name.name
         # Save resize imaeg
         resized = fat_img.resize((200, 200))
         resized.save(resized_filename, optimize=True,

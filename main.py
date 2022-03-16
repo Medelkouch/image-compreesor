@@ -34,25 +34,20 @@ class ImageBody(BaseModel):
     name: str
 
 
-class OptImgBody(BaseModel):
-    estate_id: str
-    images: List[ImageBody]
+class Image():
+    image: str
 
 
 @app.post("/api/image/optimize")
-def optimize_images(body: OptImgBody):
+def optimize_images(body: Image):
     optimized_images = []
     skipped_images = []
 
-    images = body.images
-    estate_id = str(body.estate_id) + "/"
-
     log.info(f">> Images processing start : {body}")
-    for img in images:
-        if image_optimizer(img, estate_id):
-            optimized_images.append(img.id)
-        else:
-            skipped_images.append(img)
+    if image_optimizer(body.image):
+        optimized_images.append('ok')
+    else:
+        skipped_images.append('error')
 
     log.info(f">> Processing done !")
     return {
