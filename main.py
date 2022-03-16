@@ -1,6 +1,6 @@
 from typing import List
 from config import IMG_COMPRESS_PATH
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from img_processing import image_optimizer, zip_folder
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
@@ -34,17 +34,13 @@ class ImageBody(BaseModel):
     name: str
 
 
-class Image():
-    image: str
-
-
 @app.post("/api/image/optimize")
-def optimize_images(body: Image):
+def optimize_images(req: Request, image: str):
     optimized_images = []
     skipped_images = []
 
-    log.info(f">> Images processing start : {body}")
-    if image_optimizer(body.image):
+    log.info(f">> Images processing start : {image}")
+    if image_optimizer(image):
         optimized_images.append('ok')
     else:
         skipped_images.append('error')
