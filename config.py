@@ -3,10 +3,10 @@ DEBUG = True
 
 # database config
 DB_CONFIG = {
-    'host': '',
-    'database': '',
-    'user': '',
-    'password': '',
+    'host': '80',
+    'database': 'db',
+    'user': 'root',
+    'password': 'root',
 }
 
 # images folder absolutes path end with '/'
