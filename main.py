@@ -48,7 +48,7 @@ def optimize_images(req: Request, image: str = Form(...)):
     log.info(f">> Processing done !")
     return {
         'optimized_images': optimized_images,
-        # 'skipped_images': skipped_images
+        'skipped_images': skipped_images
     }
 
 #####################################################################
@@ -60,7 +60,9 @@ class DowImgBody(BaseModel):
 
 @app.post("/api/image/download")
 def download_images(body: DowImgBody):
+    print(body.estate_id, 'body')
     folder_path = IMG_COMPRESS_PATH + body.estate_id + '/'
+    # folder_path = IMG_COMPRESS_PATH 
 
     try:
         download = zip_folder(folder_path)
