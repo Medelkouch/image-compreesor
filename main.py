@@ -1,11 +1,14 @@
 from typing import List
-from config import IMG_COMPRESS_PATH
-from fastapi import FastAPI, HTTPException, Request, Form
+from config import IMG_COMPRESS_PATH, IMG_COMPRESS_REMOTE_PATH, ROOT_DIR_PATH
+from fastapi import Body, FastAPI, HTTPException, Request, Form
 from img_processing import image_optimizer, zip_folder
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from logger import log
+
+from celery_worker import create_task
+from fastapi.responses import JSONResponse
 
 # uvicorn main:app --host 0.0.0.0 --port 80 --reload
 
@@ -25,6 +28,15 @@ app.add_middleware(
 @app.get("/")
 def read_root():
     return {"status": "Server working ..."}
+
+#####################################################################
+@app.post("/api/ex1")
+def run_task(data=Body(...)):
+    amount = int(data["amount"])
+    x = data["x"]
+    y = data["y"]
+    task = create_task.delay(amount, x, y)
+    return JSONResponse({"Result": task.get()})
 
 #####################################################################
 
@@ -47,6 +59,7 @@ def optimize_images(req: Request, image: str = Form(...)):
 
     log.info(f">> Processing done !")
     return {
+        'content': image,
         'optimized_images': optimized_images,
         'skipped_images': skipped_images
     }
@@ -61,8 +74,8 @@ class DowImgBody(BaseModel):
 @app.post("/api/image/download")
 def download_images(body: DowImgBody):
     print(body.estate_id, 'body')
-    # folder_path = IMG_COMPRESS_PATH + body.estate_id + '/'
-    folder_path = IMG_COMPRESS_PATH
+    # folder_path = ROOT_DIR_PATH + body.estate_id + '/'
+    folder_path = ROOT_DIR_PATH
 
     try:
         download = zip_folder(folder_path)

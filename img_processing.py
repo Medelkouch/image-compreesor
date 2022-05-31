@@ -1,6 +1,6 @@
 from io import BytesIO
 from zipfile import ZipFile
-from config import IMG_COMPRESS_PATH, IMG_QUALITY, RESIZED_PATH, ROOT_DIR
+from config import IMG_COMPRESS_PATH, IMG_QUALITY, RESIZED_PATH, ROOT_DIR, ROOT_DIR_PATH
 from PIL import Image
 from hurry.filesize import size
 import requests

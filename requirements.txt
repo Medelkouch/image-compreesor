@@ -38,5 +38,45 @@ typing-extensions==4.1.1
 urllib3==1.26.8
 uvicorn==0.17.5
 wheel==0.37.1
+amqp == 5.1.1 
+billiard == 3.6.4.0 
+celery == 5.2.7 
+click-didyoumean == 0.3.0
+click-plugins == 1.1.1 
+click-repl == 0.2.0
+kombu == 5.2.4 
+prompt-toolkit == 3.0.29 
+vine == 5.0.0 
+wcwidth == 0.2.5
 
+alembic==1.6.5
+aniso8601==7.0.0
+appdirs==1.4.4
+bcrypt==3.2.0
+black==21.6b0
+cffi==1.14.5
+colorama==0.4.4
+flower==1.0.0
+graphene==2.1.8
+graphene-sqlalchemy==2.3.0
+graphql-core==2.3.2
+graphql-relay==2.0.1
+greenlet==1.1.0
+humanize==3.10.0
+Mako==1.1.4
+MarkupSafe==2.0.1
+mypy-extensions==0.4.3
+pathspec==0.8.1
+prometheus-client==0.11.0
+promise==2.3
+pycparser==2.20
+PyJWT==2.1.0
+python-editor==1.0.4
+redis==3.5.3
+regex==2021.7.1
+Rx==1.6.1
+singledispatch==3.6.2
+SQLAlchemy==1.4.20
+toml==0.10.2
+tornado==6.1
 
