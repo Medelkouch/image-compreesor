@@ -7,7 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from logger import log
 
-from celery_worker import create_task
+from celery_worker import create_task, image_optimizer_task
 from fastapi.responses import JSONResponse
 
 # uvicorn main:app --host 0.0.0.0 --port 80 --reload
@@ -30,13 +30,18 @@ def read_root():
     return {"status": "Server working ..."}
 
 #####################################################################
-@app.post("/api/ex1")
-def run_task(data=Body(...)):
-    amount = int(data["amount"])
-    x = data["x"]
-    y = data["y"]
-    task = create_task.delay(amount, x, y)
-    return JSONResponse({"Result": task.get()})
+@app.post("/tasks", status_code=201)
+def run_task(payload = Body(...)):
+    task_type = payload["type"]
+    task = create_task.delay(int(task_type))
+    return JSONResponse({"task_id": task.id})
+
+#####################################################################
+@app.post("/api/compress_task", status_code=201)
+def run_task(payload = Body(...)):
+    image_link = payload["image"]
+    task = image_optimizer_task.delay(str(image_link))
+    return JSONResponse({"task_id": task.id})
 
 #####################################################################
 

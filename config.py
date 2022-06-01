@@ -10,8 +10,8 @@ DB_CONFIG = {
 }
 
 # images local folder absolutes path end with '/'
-ROOT_DIR='/home/medelkouch/workspace/image-optimizer/client/'
-ROOT_DIR_PATH = '/home/medelkouch/workspace/image-optimizer/cdn/'
+ROOT_DIR='./client/'
+ROOT_DIR_PATH = './cdn/'
 IMG_COMPRESS_PATH = ROOT_DIR_PATH + 'tiny-images/'
 RESIZED_PATH = ROOT_DIR_PATH + 'tiny-images-plus-2/'
 

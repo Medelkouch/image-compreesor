@@ -3,11 +3,11 @@ services:
     app:
         container_name: 'microservice-image-optimizer'
         build: .
-        command: gunicorn main:app --workers 4 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:80  
+        command: gunicorn main:app --workers 4 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000  
         volumes:
             - './:/app'
         ports:
-            - '80:80'
+            - '8000:8000'
         restart: always    
     redis:
         container_name: redis
