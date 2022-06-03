@@ -57,6 +57,7 @@ coverage.xml
 
 # Django stuff:
 *.log
+*.jpg
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
@@ -109,8 +110,10 @@ venv/
 ENV/
 env.bak/
 venv.bak/
-ftp_server/
-client/
+ftp_server/images
+ftp_server/compressed
+ftp_server/resized
+client/images
 cdn/
 
 # Spyder project settings
