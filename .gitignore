@@ -109,6 +109,9 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+ftp_server/
+client/
+cdn/
 
 # Spyder project settings
 .spyderproject
