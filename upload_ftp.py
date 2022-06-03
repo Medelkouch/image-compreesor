@@ -1,14 +1,16 @@
 import os.path, os
 from ftplib import FTP, error_perm
 
-from config import HOST, PASSWORD, PORT, USER
+from img_processing import create_directory
+
+# from config import HOST, PASSWORD, PORT, USER
 
 
-ftp = FTP()
-ftp.connect( HOST, PORT)
-ftp.login( USER, PASSWORD)
-filename_cdn = "cdn"
-filename_client = "client"
+# ftp = FTP()
+# ftp.connect( '192.168.11.105', 20001)
+# ftp.login( 'ftpuser', 'user2022')
+# filename_cdn = "cdn"
+# filename_client = "client"
 
 def placeFiles(ftp, path):
     for name in os.listdir(path):
@@ -32,8 +34,9 @@ def placeFiles(ftp, path):
             placeFiles(ftp, localpath)           
             print("CWD", "..")
             ftp.cwd("..")
+    
 
-placeFiles(ftp, filename_cdn)
-placeFiles(ftp, filename_client)
+# placeFiles(ftp, filename_cdn)
+# placeFiles(ftp, filename_client)
 
-ftp.quit()
+# ftp.quit()

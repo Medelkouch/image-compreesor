@@ -1,3 +1,5 @@
+import os
+from tkinter import image_names
 from typing import List
 from config import IMG_COMPRESS_PATH, IMG_COMPRESS_REMOTE_PATH, ROOT_DIR_PATH
 from fastapi import Body, FastAPI, HTTPException, Request, Form
@@ -7,7 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from logger import log
 
-from celery_worker import create_task, image_optimizer_task
+from celery_worker import image_optimizer_task, upload_task
 from fastapi.responses import JSONResponse
 
 # uvicorn main:app --host 0.0.0.0 --port 80 --reload
@@ -30,18 +32,22 @@ def read_root():
     return {"status": "Server working ..."}
 
 #####################################################################
-@app.post("/tasks", status_code=201)
+@app.post("/api/upload_task", status_code=201)
 def run_task(payload = Body(...)):
-    task_type = payload["type"]
-    task = create_task.delay(int(task_type))
+    upload = payload["task_upload"]
+    task = upload_task.delay(upload)
     return JSONResponse({"task_id": task.id})
 
 #####################################################################
 @app.post("/api/compress_task", status_code=201)
 def run_task(payload = Body(...)):
-    image_link = payload["image"]
-    task = image_optimizer_task.delay(str(image_link))
-    return JSONResponse({"task_id": task.id})
+    images_link = payload["images"]
+    tasks = []
+    for imagename in os.listdir(images_link):    
+        log.info(f">> Images processing start : {imagename}")
+        tasks.append(image_optimizer_task.delay(imagename))
+    log.info(f">> Processing done !")
+    return JSONResponse({"tasks": "compressed"})
 
 #####################################################################
 

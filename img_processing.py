@@ -1,6 +1,6 @@
 from io import BytesIO
 from zipfile import ZipFile
-from config import IMG_COMPRESS_PATH, IMG_QUALITY, RESIZED_PATH, ROOT_DIR, ROOT_DIR_PATH
+from config import IMG_COMPRESS_REMOTE_PATH, IMG_QUALITY, RESIZED_REMOTE_PATH, ROOT_DIR_REMOTE_IMAGES
 from PIL import Image
 from hurry.filesize import size
 import requests
@@ -32,14 +32,14 @@ def get_file_size(file_path):
 
 def image_optimizer(image_name):
     try:
-        fat_img = Image.open(ROOT_DIR + image_name)
+        fat_img = Image.open(ROOT_DIR_REMOTE_IMAGES + image_name)
         ### make directories
-        create_directory(IMG_COMPRESS_PATH)
-        create_directory(RESIZED_PATH)
+        create_directory(IMG_COMPRESS_REMOTE_PATH)
+        create_directory(RESIZED_REMOTE_PATH)
 
         # compressed image name
-        slim_img_filename = IMG_COMPRESS_PATH + image_name
-        resized_filename = RESIZED_PATH + image_name
+        slim_img_filename = IMG_COMPRESS_REMOTE_PATH + image_name
+        resized_filename = RESIZED_REMOTE_PATH + image_name
         # Save resize imaeg
         resized = fat_img.resize((200, 200))
         resized.save(resized_filename, optimize=True,

@@ -17,6 +17,7 @@ COPY ./ /app
 RUN chmod -R 777 /app/logs
 RUN chmod -R 777 /app/client
 RUN chmod -R 777 /app/cdn
+RUN chmod -R 777 /app/ftp_server
 
 
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000" ,"--reload"]
