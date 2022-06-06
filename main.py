@@ -86,7 +86,7 @@ class DowImgBody(BaseModel):
 def download_images(body: DowImgBody):
     print(body.estate_id, 'body')
     # folder_path = ROOT_DIR_PATH + body.estate_id + '/'
-    folder_path = ROOT_DIR_PATH
+    folder_path = IMG_COMPRESS_REMOTE_PATH
 
     try:
         download = zip_folder(folder_path)
